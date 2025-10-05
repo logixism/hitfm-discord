@@ -1,6 +1,13 @@
 FROM oven/bun:1
 
-RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    build-essential \
+    pkg-config \
+    libopus-dev \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -10,4 +17,6 @@ RUN bun install
 
 COPY . .
 
-CMD ["bun", "run", "start"]
+ENV NODE_ENV=production
+
+CMD ["bun", "src/index.ts"]
