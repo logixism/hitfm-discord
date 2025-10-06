@@ -39,6 +39,9 @@ export class StatusUpdater {
         headers: { Accept: "application/json" },
       });
 
+      console.log("Data received:");
+      console.log(data);
+
       if (!Array.isArray(data)) {
         console.warn("Unexpected response format:", data);
         return;
