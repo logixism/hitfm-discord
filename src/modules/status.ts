@@ -31,9 +31,14 @@ export class StatusUpdater {
         },
       });
 
-      const parsed = z.array(SongSchema).parse(data);
-
-      return parsed;
+      try {
+        const parsed = z.array(SongSchema).parse(data);
+        return parsed;
+      } catch (zErr) {
+        console.error("Failed to parse songs:", zErr);
+        console.error("Raw response data:", data);
+        return [];
+      }
     } catch (err) {
       console.error("Failed to fetch songs:", err);
       return [];
