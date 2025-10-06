@@ -24,7 +24,7 @@ type DjInfo = z.infer<typeof DjSchema>;
 const SONG_DATA_URL = "https://o.tavrmedia.ua/hit";
 const SONG_FETCH_INTERVAL_MS = 5_000;
 const STATUS_UPDATE_INTERVAL_MS = 1_000;
-const AD_STATUS = "Ad / talk break";
+const AD_STATUS = "🛑 Ad / talk break";
 
 export class StatusUpdater {
   private lastStatusSet = "";
@@ -39,32 +39,22 @@ export class StatusUpdater {
         headers: { Accept: "application/json" },
       });
 
-      console.log("Data received:");
-      console.log(data);
-
       if (!Array.isArray(data)) {
         console.warn("Unexpected response format:", data);
         return;
       }
 
-      let foundSong: Song | null = null;
-      let foundDj: DjInfo | null = null;
+      if (data.length > 0) {
+        const firstEntry = data[0];
 
-      for (const item of data) {
-        const songResult = SongSchema.safeParse(item);
-        if (songResult.success) {
-          foundSong = songResult.data;
-          continue;
-        }
-
-        const djResult = DjSchema.safeParse(item);
-        if (djResult.success) {
-          foundDj = djResult.data;
+        if (SongSchema.safeParse(firstEntry).success) {
+          this.latestDj = null;
+          this.latestSong = firstEntry;
+        } else if (DjSchema.safeParse(firstEntry).success) {
+          this.latestDj = firstEntry;
+          this.latestSong = null;
         }
       }
-
-      this.latestSong = foundSong;
-      this.latestDj = foundDj;
     } catch (err) {
       console.error("Failed to fetch songs:", err);
     }
@@ -95,9 +85,7 @@ export class StatusUpdater {
         return this.setChannelStatus(AD_STATUS);
       }
       return this.setChannelStatus(`🎤 ${song.singer} - 💽 ${song.song}`);
-    }
-
-    if (dj) {
+    } else if (dj) {
       return this.setChannelStatus(`🎧 ${dj.title} (${dj.cur_time})`);
     }
   }
