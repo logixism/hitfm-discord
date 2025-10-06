@@ -35,7 +35,7 @@ export class StatusUpdater {
 
   private async fetchSongs(): Promise<void> {
     try {
-      const { data } = await axios.get(SONG_DATA_URL, {
+      const { data } = await axios.get(`${SONG_DATA_URL}?_=${Date.now()}`, {
         headers: { Accept: "application/json" },
       });
 
