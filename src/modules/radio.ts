@@ -11,7 +11,7 @@ import {
   VoiceConnectionStatus,
 } from "@discordjs/voice";
 import type { Client } from "discord.js";
-import { config, env } from "../config";
+import { env } from "../config";
 
 const STREAM_VOLUME = 0.8;
 
@@ -351,7 +351,7 @@ export class RadioStreamer {
     try {
       console.log("[RadioStreamer] Starting stream...");
 
-      const resource = createAudioResource(config.STREAM_URL, {
+      const resource = createAudioResource(env.STREAM_URL, {
         inlineVolume: true,
         inputType: StreamType.Arbitrary,
       });

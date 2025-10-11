@@ -1,6 +1,6 @@
 import axios from "axios";
 import z from "zod";
-import { config, env } from "../config";
+import { env } from "../config";
 
 // api is apparently extremely stupid, returns all kinda shit at once
 const SongSchema = z.object({
@@ -35,7 +35,7 @@ export class StatusUpdater {
   private async fetchSongs(): Promise<void> {
     try {
       const { data } = await axios.get(
-        `${config.TAVR_API_STATUS_URL}?_=${Date.now()}`,
+        `${env.TAVR_API_STATUS_URL}?_=${Date.now()}`,
         {
           headers: { Accept: "application/json" },
         }
