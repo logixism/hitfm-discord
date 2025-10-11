@@ -1,6 +1,6 @@
 import axios from "axios";
 import z from "zod";
-import { env } from "../config";
+import { config, env } from "../config";
 
 // api is apparently extremely stupid, returns all kinda shit at once
 const SongSchema = z.object({
@@ -21,7 +21,6 @@ const DjSchema = z.object({
 type Song = z.infer<typeof SongSchema>;
 type DjInfo = z.infer<typeof DjSchema>;
 
-const SONG_DATA_URL = "https://o.tavrmedia.ua/hit";
 const SONG_FETCH_INTERVAL_MS = 5_000;
 const STATUS_UPDATE_INTERVAL_MS = 1_000;
 const AD_STATUS = "🛑 Ad / talk break";
@@ -35,9 +34,12 @@ export class StatusUpdater {
 
   private async fetchSongs(): Promise<void> {
     try {
-      const { data } = await axios.get(`${SONG_DATA_URL}?_=${Date.now()}`, {
-        headers: { Accept: "application/json" },
-      });
+      const { data } = await axios.get(
+        `${config.TAVR_API_STATUS_URL}?_=${Date.now()}`,
+        {
+          headers: { Accept: "application/json" },
+        }
+      );
 
       if (!Array.isArray(data)) {
         console.warn("Unexpected response format:", data);

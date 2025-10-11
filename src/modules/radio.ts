@@ -11,9 +11,8 @@ import {
   VoiceConnectionStatus,
 } from "@discordjs/voice";
 import type { Client } from "discord.js";
-import { env } from "../config";
+import { config, env } from "../config";
 
-const RADIO_URL = "https://online.hitfm.ua/HitFM_HD";
 const STREAM_VOLUME = 0.8;
 
 // Timing configuration
@@ -352,7 +351,7 @@ export class RadioStreamer {
     try {
       console.log("[RadioStreamer] Starting stream...");
 
-      const resource = createAudioResource(RADIO_URL, {
+      const resource = createAudioResource(config.STREAM_URL, {
         inlineVolume: true,
         inputType: StreamType.Arbitrary,
       });

@@ -1,15 +1,3 @@
-# hitfm-discord
+# tavrmedia-discord
 
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.21. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+This is a simple Discord bot that plays a radio stream from TAVR Media on a voice channel and sets the voice channel's status to the current track.

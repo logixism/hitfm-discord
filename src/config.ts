@@ -7,3 +7,8 @@ const EnvSchema = z.object({
 });
 
 export const env = EnvSchema.parse(process.env);
+
+export const config = {
+  STREAM_URL: "https://tavr.tvstitch.com/HitFM_Ukr_HD",
+  TAVR_API_STATUS_URL: "https://o.tavrmedia.ua/hitu",
+};
